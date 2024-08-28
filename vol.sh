@@ -3,8 +3,8 @@
 # Obtener el estado de volumen y mostrar el resultado
 
 case $BUTTON in
-    1) notify-send "boton1" "boton1" ;;
-    3) notify-send "boton1" "boton3" ;;
+    1) exec ~/scripts/./wifi_red.sh ;;
+    4) exec ~/scripts/./wifi_devices.sh ;;
 esac
 
 
