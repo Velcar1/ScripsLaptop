@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Definir archivo para controlar las notificaciones
+BATTERY_FILE="/tmp/last_battery_percentage"
+
 # Leer el porcentaje y estado de la batería BAT0
 if [ -f /sys/class/power_supply/BAT0/capacity ]; then
     bat0=$(cat /sys/class/power_supply/BAT0/capacity)
@@ -48,7 +51,17 @@ fi
 # Mostrar el resultado entre 0 y 100, con símbolo de carga si aplica
 echo "   $avg_percentage%$charging_symbol"
 
-# Enviar notificación si el promedio de batería es menor al 10%
-if [ "$avg_percentage" -lt 10 ]; then
-    notify-send "Advertencia de batería baja" "La batería está por debajo del 10% ($avg_percentage%)"
+# Leer el último porcentaje almacenado desde el archivo (si existe)
+if [ -f "$BATTERY_FILE" ]; then
+    last_percentage=$(cat "$BATTERY_FILE")
+else
+    last_percentage=100  # Valor inicial alto para asegurar que la primera ejecución notifique si es menor al 10%
 fi
+
+# Verificar si el promedio de batería es menor al 10% y si es diferente al último valor
+if [ "$avg_percentage" -lt 20 ] && [ "$avg_percentage" -ne "$last_percentage" ]; then
+    notify-send "Advertencia de batería baja" "La batería está por debajo del 20% ($avg_percentage%)"
+fi
+
+# Almacenar el porcentaje actual en el archivo
+echo "$avg_percentage" > "$BATTERY_FILE"
