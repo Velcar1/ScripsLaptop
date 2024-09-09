@@ -51,6 +51,11 @@ fi
 # Mostrar el resultado entre 0 y 100, con símbolo de carga si aplica
 echo "   $avg_percentage%$charging_symbol"
 
+charging=false
+if [ "$state0" = "Charging" ] || [ "$state1" = "Charging" ]; then
+    charging=true
+fi
+
 # Leer el último porcentaje almacenado desde el archivo (si existe)
 if [ -f "$BATTERY_FILE" ]; then
     last_percentage=$(cat "$BATTERY_FILE")
@@ -58,8 +63,8 @@ else
     last_percentage=100  # Valor inicial alto para asegurar que la primera ejecución notifique si es menor al 10%
 fi
 
-# Verificar si el promedio de batería es menor al 10% y si es diferente al último valor
-if [ "$avg_percentage" -lt 20 ] && [ "$avg_percentage" -ne "$last_percentage" ]; then
+# Verificar si el promedio de batería es menor al 20%, si no está cargando y si es diferente al último valor
+if [ "$avg_percentage" -lt 20 ] && [ "$avg_percentage" -ne "$last_percentage" ] && [ "$charging" = false ]; then
     notify-send "Advertencia de batería baja" "La batería está por debajo del 20% ($avg_percentage%)"
 fi
 
