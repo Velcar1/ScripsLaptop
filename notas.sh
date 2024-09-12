@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Definir el directorio donde se guardarán las notas
-NOTAS_DIR="$HOME/.config/Notas"
+NOTAS_DIR="$HOME/notas"
 
 # Crear el directorio si no existe
 if [ ! -d "$NOTAS_DIR" ]; then
@@ -28,10 +28,16 @@ if [ "$OPCION" == "Crear nueva nota" ]; then
     fi
 
 elif [ "$OPCION" == "Abrir notas existentes" ]; then
-    # Abrir el directorio de notas con Neovim en modo explorador de archivos
-    cd "$NOTAS_DIR"
-    nvim .
+    # Listar todas las notas disponibles (archivos .txt) en el directorio de notas
+    NOTA_SELECCIONADA=$(ls "$NOTAS_DIR"/*.txt 2> /dev/null | xargs -n 1 basename | dmenu -i -p "Selecciona una nota:")
 
+    # Verificar si se seleccionó alguna nota
+    if [ -n "$NOTA_SELECCIONADA" ]; then
+        # Abrir la nota seleccionada con Neovim
+        nvim "$NOTAS_DIR/$NOTA_SELECCIONADA"
+    else
+        echo "No se seleccionó ninguna nota."
+    fi
 else
     # Mensaje de error si la opción no es válida
     echo "Opción no válida"
