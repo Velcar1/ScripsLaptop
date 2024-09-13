@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Definir el directorio donde se guardarán las notas
-NOTAS_DIR="$HOME/notas"
+NOTAS_DIR="$HOME/.config/Notas"
 
 # Crear el directorio si no existe
 if [ ! -d "$NOTAS_DIR" ]; then
