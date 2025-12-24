@@ -17,8 +17,10 @@ if [ "$OPCION" == "Crear nueva nota" ]; then
 
     # Verificar que se ingresó un nombre válido (no vacío)
     if [ -n "$NOMBRE_NOTA" ]; then
+        # Asegurarse de que el nombre de la nota tenga la extensión .txt
+        NOMBRE_NOTA="${NOMBRE_NOTA%.txt}.txt"
         # Ruta completa del archivo de la nueva nota
-        ARCHIVO_NOTA="$NOTAS_DIR/$NOMBRE_NOTA.txt"
+        ARCHIVO_NOTA="$NOTAS_DIR/$NOMBRE_NOTA"
         
         # Crear el archivo y abrirlo con Neovim
         nvim "$ARCHIVO_NOTA"
