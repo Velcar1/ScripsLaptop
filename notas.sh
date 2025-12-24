@@ -29,7 +29,7 @@ if [ "$OPCION" == "Crear nueva nota" ]; then
 
 elif [ "$OPCION" == "Abrir notas existentes" ]; then
     # Listar todas las notas disponibles (archivos .txt) en el directorio de notas
-    NOTA_SELECCIONADA=$(ls "$NOTAS_DIR"/*.txt 2> /dev/null | xargs -n 1 basename | dmenu -i -p "Selecciona una nota:")
+    NOTA_SELECCIONADA=$(find "$NOTAS_DIR" -maxdepth 1 -name "*.txt" -printf "%f\n" | dmenu -i -p "Selecciona una nota:")
 
     # Verificar si se seleccionó alguna nota
     if [ -n "$NOTA_SELECCIONADA" ]; then
